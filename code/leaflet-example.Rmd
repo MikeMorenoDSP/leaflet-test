@@ -1,0 +1,41 @@
+---
+title: "Leaflet example"
+author: ""
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+Este archivo genera un html, para correrlo, puedes usar Rstudio, u otro editor de texto que use R. Hay un editor online que puedes usar tambien, solo tienes que configurar el proyecto para usar github [posit.cloud](https://posit.cloud).  
+
+Primero tienes que cargar las libereias:
+
+```{r setup}
+# Set the document options for chunks
+knitr::opts_chunk$set(warning = F, message = F)
+# Load the libraries you will use 
+# if not installed use:
+# install.packages('leaflet'); install.packages('sf')
+library(leaflet); library(sf)
+```
+
+
+Asi es como puedes usar leaflet para hacer el mapa:
+
+```{r map example}
+# Primero lee los datos
+x <- read_sf('../data/(atropello)indices-de-estadisticas-de-accidentes-viales-monterrey/indices-de-estadisticas-de-accidentes-viales-monterrey.shp')
+
+# Ahora hacemos el mapa
+leaflet() |>  # llamamos a la funcion de leaflet
+  addProviderTiles(providers$OpenStreetMap) |> # agregamos mapa de fondo
+  addMarkers( # agregamos los puntos
+    data = x, # este es el nombre de la base de datos
+    clusterOptions = markerClusterOptions(),  # opcion para hacer clusters de puntos
+    # Labels de los puntos, lo puedes cambiar por otras:
+    popup = ~paste('Resolucion:', resolucion, 
+                   "<br>Mes:", mes)
+  )
+```
+
+
